@@ -1,57 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <style>
-    body { margin:0; padding:0; background:transparent; }
-    #viewer_total {
-      display:flex;
-      align-items:center;
-      gap:10px;
-      font-size:36px;
-      font-family: Arial, sans-serif;
-      color:#fff;
-    }
-    .icon-img {
-      height:32px;
-    }
-    #total_count {
-      font-weight:bold;
-      margin-left:5px;
-    }
-  </style>
+<meta charset="utf-8">
+<style>
+  body { margin:0; padding:0; background:transparent; }
+  #viewer_total {
+    display:flex;
+    align-items:center;
+    font-size:36px;
+    font-weight:bold;
+    font-family: Arial, sans-serif;
+    color: white;
+    gap: 10px;
+  }
+  .icon-img { height:32px; width:auto; display:inline-block; }
+  #total_count { margin-left:5px; }
+</style>
 </head>
 <body>
   <div id="viewer_total">
-    <!-- Kick ícone oficial (PNG fallback) -->
-    <img class="icon-img" 
-         src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Kick_logo.svg/64px-Kick_logo.svg.png" 
-         alt="Kick" 
-         onerror="this.onerror=null;this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Kick_logo.svg/48px-Kick_logo.svg.png'">
-    <!-- Twitch -->
+    <!-- KICK — K verde original (SVG com fallback PNG) -->
+    <img class="icon-img"
+         src="https://static.wikia.nocookie.net/logopedia/images/1/11/Kick_%28Icon%29.svg/revision/latest/scale-to-width-down/128"
+         alt="Kick"
+         referrerpolicy="no-referrer"
+         onerror="this.onerror=null;this.src='https://seeklogo.com/images/K/kick-stream-logo-0F483A3D61-seeklogo.com.png'">
+    <!-- TWITCH -->
     <img class="icon-img" src="https://cdn-icons-png.flaticon.com/512/5968/5968819.png" alt="Twitch">
-    <!-- YouTube -->
+    <!-- YOUTUBE -->
     <img class="icon-img" src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube">
-    <!-- Contador total -->
+    <!-- TOTAL -->
     <span id="total_count">0</span>
   </div>
 
-  <script>
-    const ENDPOINT = "https://SEU-DOMINIO.vercel.app/api/counts"; // << troque aqui pelo seu domínio Vercel
+<script>
+  // Troque pelo domínio do seu projeto na Vercel:
+  const ENDPOINT = "https://SEU-DOMINIO.vercel.app/api/counts";
 
-    async function updateTotal() {
-      try {
-        const res = await fetch(ENDPOINT, { cache: 'no-store' });
-        if (!res.ok) throw new Error("HTTP " + res.status);
-        const j = await res.json();
-        document.getElementById('total_count').textContent = j.total ?? 0;
-      } catch (e) {
-        console.warn("Erro ao buscar contagem:", e);
-      }
+  async function updateTotal() {
+    try {
+      const res = await fetch(ENDPOINT, { cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const j = await res.json();
+      document.getElementById('total_count').textContent = j.total ?? 0;
+    } catch (e) {
+      console.warn('Falha ao buscar contagem:', e);
     }
+  }
 
-    updateTotal();
-    setInterval(updateTotal, 5000);
-  </script>
+  updateTotal();
+  setInterval(updateTotal, 5000);
+</script>
 </body>
 </html>
