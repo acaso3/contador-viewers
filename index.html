@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { margin:0; padding:0; background:transparent; }
+    #viewer_total {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size:36px;
+      font-family: Arial, sans-serif;
+      color:#fff;
+    }
+    .icon-img {
+      height:32px;
+    }
+    #total_count {
+      font-weight:bold;
+      margin-left:5px;
+    }
+  </style>
+</head>
+<body>
+  <div id="viewer_total">
+    <!-- Kick ícone oficial (PNG fallback) -->
+    <img class="icon-img" 
+         src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Kick_logo.svg/64px-Kick_logo.svg.png" 
+         alt="Kick" 
+         onerror="this.onerror=null;this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Kick_logo.svg/48px-Kick_logo.svg.png'">
+    <!-- Twitch -->
+    <img class="icon-img" src="https://cdn-icons-png.flaticon.com/512/5968/5968819.png" alt="Twitch">
+    <!-- YouTube -->
+    <img class="icon-img" src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube">
+    <!-- Contador total -->
+    <span id="total_count">0</span>
+  </div>
+
+  <script>
+    const ENDPOINT = "https://SEU-DOMINIO.vercel.app/api/counts"; // << troque aqui pelo seu domínio Vercel
+
+    async function updateTotal() {
+      try {
+        const res = await fetch(ENDPOINT, { cache: 'no-store' });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const j = await res.json();
+        document.getElementById('total_count').textContent = j.total ?? 0;
+      } catch (e) {
+        console.warn("Erro ao buscar contagem:", e);
+      }
+    }
+
+    updateTotal();
+    setInterval(updateTotal, 5000);
+  </script>
+</body>
+</html>
